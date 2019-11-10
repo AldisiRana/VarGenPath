@@ -3,8 +3,9 @@
 """Utilities for VarGenPath."""
 
 import pandas as pd
-from py2cytoscape.data.cyrest_client import CyRestClient
 import py2cytoscape.util.util_dataframe as df_util
+from py2cytoscape.data.cyrest_client import CyRestClient
+from py2cytoscape.cyrest.base import api
 from pybiomart import Dataset
 
 
@@ -19,7 +20,7 @@ def file_reader(path: str) -> list:
     return content
 
 
-def get_associated_genes(variants_list: list):
+def get_associated_genes(variants_list: list) -> pd.DataFrame:
     """
 	Get variant gene information from BioMart.
 	:param variants_list: the list with variant ids.
@@ -43,8 +44,32 @@ def var_genes_network(variants_genes_df):
         cy = CyRestClient()
         cy.network.delete_all()
         cy.session.delete()
-    except Exception as e:
+    except Exception:
         raise Exception('Uh-oh! Make sure that cytoscape is open then try again.')
     data = df_util.from_dataframe(variants_genes_df, source_col='Variant name', target_col='Gene name')
     network = cy.network.create(data=data, name='VarGen network')
     return network
+
+
+def extend_network(linkset_path):
+    """Extend network with linkset."""
+    return api(namespace="cytargetlinker", command="extend", PARAMS={'linkSetFiles': linkset_path})
+
+
+def save_information(
+        *,
+        network_image: str,
+        session_file: str,
+        client: CyRestClient,
+        image_type: str = 'SVG (*.svg)',
+):
+    client.session.save(session_file)
+    api(
+        namespace="layout",
+        command="apply preferred",
+    )
+    api(
+        namespace="view",
+        command="export",
+        PARAMS={'outputFile': network_image, "view": 'current', 'options': image_type}
+    )
