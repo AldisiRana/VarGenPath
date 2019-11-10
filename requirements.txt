@@ -1,3 +1,4 @@
+pandas
 pybiomart
 py2cytoscape
 urllib3
