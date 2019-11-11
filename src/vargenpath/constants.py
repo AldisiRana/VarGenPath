@@ -12,7 +12,8 @@ __all__ = [
     'IMAGE_PATH',
     'SESSION_PATH',
     'DATA',
-    'LINKSET_PATH'
+    'LINKSET_PATH',
+    'VARIANT_LIST_PATH'
 ]
 
 date = datetime.today().strftime('%d%m%Y_')
@@ -22,3 +23,4 @@ IMAGE_PATH = os.path.join(OUTPUT, date+'network')
 SESSION_PATH = os.path.join(OUTPUT, date+'session')
 DATA = os.path.abspath(os.path.join(HERE, os.pardir, os.pardir, 'data'))
 LINKSET_PATH = os.path.join(DATA, 'wikipathways-20190610-hsa.xgmml')
+VARIANT_LIST_PATH = os.path.join(DATA, 'variant_list.txt')

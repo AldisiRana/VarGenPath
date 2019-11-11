@@ -46,18 +46,18 @@ def get_associated_genes(variants_list: list) -> pd.DataFrame:
     return merged_df
 
 
-def var_genes_network(variants_genes_df):
+def var_genes_network(
+        *,
+        variants_genes_df: pd.DataFrame,
+        network_name: str = 'VarGenPath network',
+        client):
     """Create cytoscape network from dataframe."""
-    try:
-        cy = get_cytoscape_connection()
-    except Exception:
-        raise Exception('Uh-oh! Make sure that cytoscape is open then try again.')
     data = df_util.from_dataframe(variants_genes_df, source_col='Variant name', target_col='Gene name')
-    network = cy.network.create(data=data, name='VarGen network')
+    network = client.network.create(data=data, name=network_name)
     return network
 
 
-def extend_network(linkset_path: str = LINKSET_PATH):
+def extend_vargen_network(linkset_path: str = LINKSET_PATH):
     """Extend network with linkset."""
     return api(namespace="cytargetlinker", command="extend", PARAMS={'linkSetFiles': linkset_path})
 
