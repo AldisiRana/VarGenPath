@@ -8,6 +8,14 @@ from py2cytoscape.data.cyrest_client import CyRestClient
 from py2cytoscape.cyrest.base import api
 from pybiomart import Dataset
 
+from .constants import IMAGE_PATH, LINKSET_PATH, SESSION_PATH
+
+def get_cytoscape_connection():
+	cy = CyRestClient()
+	cy.network.delete_all()
+	cy.session.delete()
+	return cy
+
 
 def file_reader(path: str) -> list:
     """
@@ -41,9 +49,7 @@ def get_associated_genes(variants_list: list) -> pd.DataFrame:
 def var_genes_network(variants_genes_df):
     """Create cytoscape network from dataframe."""
     try:
-        cy = CyRestClient()
-        cy.network.delete_all()
-        cy.session.delete()
+        cy = get_cytoscape_connection()
     except Exception:
         raise Exception('Uh-oh! Make sure that cytoscape is open then try again.')
     data = df_util.from_dataframe(variants_genes_df, source_col='Variant name', target_col='Gene name')
@@ -51,19 +57,25 @@ def var_genes_network(variants_genes_df):
     return network
 
 
-def extend_network(linkset_path):
+def extend_network(linkset_path: str = LINKSET_PATH):
     """Extend network with linkset."""
     return api(namespace="cytargetlinker", command="extend", PARAMS={'linkSetFiles': linkset_path})
 
 
-def save_information(
+def save_session(
         *,
-        network_image: str,
-        session_file: str,
+        session_file: str = SESSION_PATH,
         client: CyRestClient,
-        image_type: str = 'SVG (*.svg)',
 ):
     client.session.save(session_file)
+    return 'Session has been saved in ' + session_file
+
+
+def save_image(
+        *,
+        network_image: str = IMAGE_PATH,
+        image_type: str = 'SVG (*.svg)',
+):
     api(
         namespace="layout",
         command="apply preferred",
@@ -73,3 +85,8 @@ def save_information(
         command="export",
         PARAMS={'outputFile': network_image, "view": 'current', 'options': image_type}
     )
+    return 'Image has been saved in ' + network_image + 'using ' + image_type + 'format.'
+
+
+def save_network():
+    pass
