@@ -10,11 +10,13 @@ from pybiomart import Dataset
 
 from .constants import IMAGE_PATH, LINKSET_PATH, SESSION_PATH
 
+
 def get_cytoscape_connection():
-	cy = CyRestClient()
-	cy.network.delete_all()
-	cy.session.delete()
-	return cy
+    """Connect to cytoscape."""
+    cy = CyRestClient()
+    cy.network.delete_all()
+    cy.session.delete()
+    return cy
 
 
 def file_reader(path: str) -> list:
