@@ -11,7 +11,7 @@ from pybiomart import Dataset
 from .constants import IMAGE_PATH, LINKSET_PATH, SESSION_PATH
 
 
-def get_cytoscape_connection():
+def get_cytoscape_connection() -> CyRestClient:
     """Connect to cytoscape."""
     cy = CyRestClient()
     cy.network.delete_all()
@@ -102,7 +102,7 @@ def save_session(
         *,
         session_file: str = SESSION_PATH,
         client: CyRestClient,
-):
+) -> str:
     """
     Save cystoscape session.
 
@@ -123,7 +123,7 @@ def save_image(
         *,
         network_image: str = IMAGE_PATH,
         image_type: str = 'SVG (*.svg)',
-):
+) -> str:
     """
     Save network image.
 
