@@ -19,6 +19,22 @@ def get_vargenpath_network(
         image_path: Optional[str],
         extend_network: bool = True,
 ):
+    """
+    Pipeline for creating vargenpath network.
+
+    Parameters
+    ----------
+    variant_list_path: the path to a list of variants.
+    network_name: the name of the network.
+    linkset_path: the path to the linkset to extend network.
+    session_path: if input path, the cytoscape session will be saved.
+    image_path: if input path, the image of the network will be saved.
+    extend_network: if true, the network will be extended.
+
+    Returns cytoscape network.
+    -------
+
+    """
     try:
         cy = get_cytoscape_connection()
     except Exception:

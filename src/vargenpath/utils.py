@@ -19,10 +19,16 @@ def get_cytoscape_connection():
 
 def file_reader(path: str) -> list:
     """
-	Read text file.
-	:param path: text file containing the variants
-	:return: list of variants
-	"""
+    Read text file.
+
+    Parameters
+    ----------
+    path: text file containing the variants.
+
+    Returns a list of variants.
+    -------
+
+    """
     file = open(path, "r")
     content = [line.strip() for line in file.readlines()]
     return content
@@ -30,10 +36,16 @@ def file_reader(path: str) -> list:
 
 def get_associated_genes(variants_list: list) -> pd.DataFrame:
     """
-	Get variant gene information from BioMart.
-	:param variants_list: the list with variant ids.
-	:return: dataframe with variant and gene information.
-	"""
+    Get variant gene information from BioMart.
+
+    Parameters
+    ----------
+    variants_list : the list with variant ids.
+
+    Returns dataframe with variant and gene information
+    -------
+
+    """
     snp_dataset = Dataset(name='hsapiens_snp', host='http://www.ensembl.org')
     variant_gene_df = snp_dataset.query(attributes=['refsnp_id', 'ensembl_gene_stable_id'],
                                         filters={'snp_filter': variants_list})
@@ -51,14 +63,36 @@ def var_genes_network(
         variants_genes_df: pd.DataFrame,
         network_name: str = 'VarGenPath network',
         client):
-    """Create cytoscape network from dataframe."""
+    """
+    Create cytoscape network from dataframe.
+
+    Parameters
+    ----------
+    variants_genes_df: dataframe containing the vaiants, genes and their interaction
+    network_name: the name of the network.
+    client: the cystocape client.
+
+    Returns initial cytoscape network
+    -------
+
+    """
     data = df_util.from_dataframe(variants_genes_df, source_col='Variant name', target_col='Gene name')
     network = client.network.create(data=data, name=network_name)
     return network
 
 
 def extend_vargen_network(linkset_path: str = LINKSET_PATH):
-    """Extend network with linkset."""
+    """
+    Extend network with linkset.
+
+    Parameters
+    ----------
+    linkset_path: the path to the linkset used to extended the network.
+
+    Returns
+    -------
+
+    """
     return api(namespace="cytargetlinker", command="extend", PARAMS={'linkSetFiles': linkset_path})
 
 
@@ -67,6 +101,18 @@ def save_session(
         session_file: str = SESSION_PATH,
         client: CyRestClient,
 ):
+    """
+    Save cystoscape session.
+
+    Parameters
+    ----------
+    session_file: path to save the session.
+    client: cystoscape client.
+
+    Returns
+    -------
+
+    """
     client.session.save(session_file)
     return 'Session has been saved in ' + session_file
 
@@ -76,6 +122,18 @@ def save_image(
         network_image: str = IMAGE_PATH,
         image_type: str = 'SVG (*.svg)',
 ):
+    """
+    Save network image.
+
+    Parameters
+    ----------
+    network_image: path to save the network image.
+    image_type: type of image to be saved.
+
+    Returns
+    -------
+
+    """
     api(
         namespace="layout",
         command="apply preferred",
