@@ -1,9 +1,12 @@
 # -*- coding: utf-8 -*-
 
+"""Command Line Interface for VarGenPath."""
+
 import click
 
 from .constants import LINKSET_PATH
 from .pipeline import get_vargenpath_network
+
 
 @click.command()
 @click.option('--variants-list', type=click.File('r'), required=True, help='A list with variants.')

@@ -10,6 +10,9 @@ Welcome to VarGenPath's documentation!
    :maxdepth: 2
    :caption: Contents:
 
+   cli
+   utils
+
 
 
 Indices and tables
