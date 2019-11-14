@@ -24,18 +24,14 @@ def get_vargenpath_network(
     """
     Pipeline for creating vargenpath network.
 
-    Parameters
-    ----------
-    variant_file: file containing a list of variants.
-    network_name: the name of the network.
-    linkset_path: the path to the linkset to extend network.
-    session_path: if input path, the cytoscape session will be saved.
-    image_path: if input path, the image of the network will be saved.
-    extend_network: if true, the network will be extended.
-
-    Returns cytoscape network.
-    -------
-
+    :param variant_file: file containing a list of variants.
+    :param network_name: the name of the network.
+    :param linkset_path: the path to the linkset to extend network.
+    :param session_path: if input path, the cytoscape session will be saved to this path.
+    :param image_path: if input path, the image of the network will be saved to this path.
+    :param extend_network: if true, the network will be extended.
+    :param image_type: the type of the image to be saved.
+    :return:
     """
     try:
         cy = get_cytoscape_connection()

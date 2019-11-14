@@ -70,13 +70,8 @@ def extend_vargen_network(linkset_path: str):
     """
     Extend network with linkset.
 
-    Parameters
-    ----------
-    linkset_path: the path to the linkset used to extended the network.
-
-    Returns
-    -------
-
+    :param linkset_path:  the path to the linkset used to extended the network.
+    :return:
     """
     return api(namespace="cytargetlinker", command="extend", PARAMS={'linkSetFiles': linkset_path})
 
@@ -89,14 +84,9 @@ def save_session(
     """
     Save cystoscape session.
 
-    Parameters
-    ----------
-    session_file: path to save the session.
-    client: cystoscape client.
-
-    Returns
-    -------
-
+    :param session_file: path to save the session.
+    :param client: cystoscape client.
+    :return:
     """
     client.session.save(session_file)
     return 'Session has been saved in ' + session_file
@@ -110,14 +100,9 @@ def save_image(
     """
     Save network image.
 
-    Parameters
-    ----------
-    network_image: path to save the network image.
-    image_type: type of image to be saved.
-
-    Returns
-    -------
-
+    :param network_image: path to save the network image.
+    :param image_type: type of image to be saved.
+    :return:
     """
     api(
         namespace="layout",
