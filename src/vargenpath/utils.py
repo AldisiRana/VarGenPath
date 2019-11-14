@@ -3,12 +3,12 @@
 """Utilities for VarGenPath."""
 
 import pandas as pd
-import py2cytoscape.util.util_dataframe as df_util
-from py2cytoscape.data.cyrest_client import CyRestClient
+from click import File, Path
 from py2cytoscape.cyrest.base import api
+from py2cytoscape.data.cynetwork import CyNetwork
+from py2cytoscape.data.cyrest_client import CyRestClient
+import py2cytoscape.util.util_dataframe as df_util
 from pybiomart import Dataset
-
-from .constants import IMAGE_PATH, LINKSET_PATH, SESSION_PATH
 
 
 def get_cytoscape_connection() -> CyRestClient:
@@ -19,34 +19,22 @@ def get_cytoscape_connection() -> CyRestClient:
     return cy
 
 
-def file_reader(path: str) -> list:
+def file_reader(file: File) -> list:
     """
     Read text file.
 
-    Parameters
-    ----------
-    path: text file containing the variants.
-
-    Returns a list of variants.
-    -------
-
+    :param file: text file containing the variants.
+    :return: a list of variants.
     """
-    file = open(path, "r")
-    content = [line.strip() for line in file.readlines()]
-    return content
+    return [line.strip() for line in file.readlines()]
 
 
 def get_associated_genes(variants_list: list) -> pd.DataFrame:
     """
     Get variant gene information from BioMart.
 
-    Parameters
-    ----------
-    variants_list : the list with variant ids.
-
-    Returns dataframe with variant and gene information
-    -------
-
+    :param variants_list: the list with variant ids.
+    :return: dataframe with variant and gene information
     """
     snp_dataset = Dataset(name='hsapiens_snp', host='http://www.ensembl.org')
     variant_gene_df = snp_dataset.query(attributes=['refsnp_id', 'ensembl_gene_stable_id'],
@@ -64,26 +52,21 @@ def var_genes_network(
         *,
         variants_genes_df: pd.DataFrame,
         network_name: str = 'VarGenPath network',
-        client):
+        client) -> CyNetwork:
     """
     Create cytoscape network from dataframe.
 
-    Parameters
-    ----------
-    variants_genes_df: dataframe containing the vaiants, genes and their interaction
-    network_name: the name of the network.
-    client: the cystocape client.
-
-    Returns initial cytoscape network
-    -------
-
+    :param variants_genes_df: dataframe containing the vaiants, genes and their interaction
+    :param network_name: the name of the network.
+    :param client: the cystocape client.
+    :return: cytoscape network
     """
     data = df_util.from_dataframe(variants_genes_df, source_col='Variant name', target_col='Gene name')
     network = client.network.create(data=data, name=network_name)
     return network
 
 
-def extend_vargen_network(linkset_path: str = LINKSET_PATH):
+def extend_vargen_network(linkset_path: str):
     """
     Extend network with linkset.
 
@@ -100,7 +83,7 @@ def extend_vargen_network(linkset_path: str = LINKSET_PATH):
 
 def save_session(
         *,
-        session_file: str = SESSION_PATH,
+        session_file: str,
         client: CyRestClient,
 ) -> str:
     """
@@ -121,7 +104,7 @@ def save_session(
 
 def save_image(
         *,
-        network_image: str = IMAGE_PATH,
+        network_image: str,
         image_type: str = 'SVG (*.svg)',
 ) -> str:
     """
