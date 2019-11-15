@@ -3,7 +3,7 @@
 """Utilities for VarGenPath."""
 
 import pandas as pd
-from click import File, Path
+from click import File
 from py2cytoscape.cyrest.base import api
 from py2cytoscape.data.cynetwork import CyNetwork
 from py2cytoscape.data.cyrest_client import CyRestClient

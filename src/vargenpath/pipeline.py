@@ -4,6 +4,7 @@
 from typing import Optional
 
 from click import File
+from py2cytoscape.data.cynetwork import CyNetwork
 
 from .utils import (
     get_cytoscape_connection, file_reader, get_associated_genes, var_genes_network, extend_vargen_network, save_session,
@@ -20,7 +21,7 @@ def get_vargenpath_network(
         image_path: Optional[str],
         extend_network: bool = True,
         image_type: Optional[str],
-):
+) -> CyNetwork:
     """
     Pipeline for creating vargenpath network.
 
@@ -31,7 +32,7 @@ def get_vargenpath_network(
     :param image_path: if input path, the image of the network will be saved to this path.
     :param extend_network: if true, the network will be extended.
     :param image_type: the type of the image to be saved.
-    :return:
+    :return: cytoscape network
     """
     try:
         cy = get_cytoscape_connection()
