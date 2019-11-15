@@ -11,6 +11,7 @@ Welcome to VarGenPath's documentation!
    :caption: Contents:
 
    cli
+   pipeline
    utils
 
 
