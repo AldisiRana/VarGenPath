@@ -68,7 +68,9 @@ def var_genes_network(
 
 def extend_vargen_network(linkset_path: str):
     """
-    Extend network with linkset.
+    Extend network with linkset in xgmml format.
+    CytargetLinker provide a number of linksets that can be downloaded and used.
+    https://cytargetlinker.github.io/pages/linksets
 
     :param linkset_path:  the path to the linkset used to extended the network.
     :return:
