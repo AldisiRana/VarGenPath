@@ -5,7 +5,6 @@
 import pandas as pd
 from click import File
 from py2cytoscape.cyrest.base import api
-from py2cytoscape.data.cynetwork import CyNetwork
 from py2cytoscape.data.cyrest_client import CyRestClient
 from pybiomart import Dataset
 
@@ -51,7 +50,7 @@ def var_genes_network(
         *,
         variants_genes_df: pd.DataFrame,
         network_name: str = 'VarGenPath network',
-        client) -> CyNetwork:
+        client) -> dict:
     """
     Create cytoscape network from dataframe.
 
@@ -60,24 +59,28 @@ def var_genes_network(
     :param client: the cystocape client.
     :return: cytoscape network
     """
-    return client.network.create_from_dataframe(
+    network = client.network.create_from_dataframe(
         variants_genes_df,
         source_col='Variant name',
         target_col='Gene name',
         name=network_name,
     )
+    return network.to_json()
 
 
-def extend_vargen_network(linkset_path: str):
+def extend_vargen_network(linkset_path: str, client: CyRestClient) -> dict:
     """
     Extend network with linkset in xgmml format.
     CytargetLinker provide a number of linksets that can be downloaded and used.
     https://cytargetlinker.github.io/pages/linksets
 
+    :param client: cystoscape client.
     :param linkset_path:  the path to the linkset used to extended the network.
     :return:
     """
-    return api(namespace="cytargetlinker", command="extend", PARAMS={'linkSetFiles': linkset_path})
+    api(namespace="cytargetlinker", command="extend", PARAMS={'linkSetFiles': linkset_path})
+    current_network_info = api(namespace="network", command='get')
+    return client.network.get(current_network_info['SUID'])
 
 
 def save_session(
@@ -106,6 +109,7 @@ def save_image(
 
     :param network_image: path to save the network image.
     :param image_type: type of image to be saved.
+    Types that can be used are JPEG (*.jpeg, *.jpg), PDF (*.pdf), PNG (*.png), PostScript (*.ps), SVG (*.svg)
     :return:
     """
     api(
@@ -120,5 +124,13 @@ def save_image(
     return 'Image has been saved in ' + network_image + 'using ' + image_type + 'format.'
 
 
-def save_network():
-    pass
+def save_network(
+        *,
+        network_path,
+        file_type,
+):
+    api(
+        namespace="network",
+        command="export",
+        PARAMS={'outputFile': network_path, 'options':file_type}
+    )
