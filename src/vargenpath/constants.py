@@ -13,7 +13,8 @@ __all__ = [
     'SESSION_PATH',
     'DATA',
     'LINKSET_PATH',
-    'VARIANT_LIST_PATH'
+    'VARIANT_LIST_PATH',
+    'FILE_TYPES',
 ]
 
 date = datetime.today().strftime('%d%m%Y_')
@@ -24,3 +25,9 @@ SESSION_PATH = os.path.join(OUTPUT, date+'session')
 DATA = os.path.abspath(os.path.join(HERE, os.pardir, os.pardir, 'data'))
 LINKSET_PATH = os.path.join(DATA, 'wikipathways-20190610-hsa.xgmml')
 VARIANT_LIST_PATH = os.path.join(DATA, 'variant_list.txt')
+FILE_TYPES = {
+    'jpeg': 'JPEG (*.jpeg, *.jpg)', 'jpg': 'JPEG (*.jpeg, *.jpg)', 'pdf': 'PDF (*.pdf)', 'png': 'PNG (*.png)',
+    'ps': 'PostScript (*.ps)', 'svg': 'SVG (*.svg)', 'cx': 'CX JSON (*.cx)', 'cyjs': 'Cytoscape.js JSON (*.cyjs)',
+    'graphml': 'GraphML files (*.graphml, *.xml)', 'nnf': 'NNF (*.nnf)', 'psi_mi_level_1': 'PSI-MI Level 1',
+    'psi_mi_level_2.5': 'PSI-MI Level 2.5', 'sif': 'SIF (*.sif)', 'xgmml': 'XGMML (*.xgmml, *.xml)'
+}
