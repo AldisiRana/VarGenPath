@@ -30,6 +30,7 @@ def file_reader(file: File) -> list:
 def get_associated_genes(variants_list: list) -> pd.DataFrame:
     """
     Get variant gene information from BioMart.
+    More information on BioMart here: https://www.ensembl.org/info/data/biomart/index.html
 
     :param variants_list: the list with variant ids.
     :return: dataframe with variant and gene information
