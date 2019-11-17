@@ -7,7 +7,6 @@ from click import File
 from py2cytoscape.cyrest.base import api
 from py2cytoscape.data.cynetwork import CyNetwork
 from py2cytoscape.data.cyrest_client import CyRestClient
-import py2cytoscape.util.util_dataframe as df_util
 from pybiomart import Dataset
 
 
@@ -61,9 +60,12 @@ def var_genes_network(
     :param client: the cystocape client.
     :return: cytoscape network
     """
-    data = df_util.from_dataframe(variants_genes_df, source_col='Variant name', target_col='Gene name')
-    network = client.network.create(data=data, name=network_name)
-    return network
+    return client.network.create_from_dataframe(
+        variants_genes_df,
+        source_col='Variant name',
+        target_col='Gene name',
+        name=network_name,
+    )
 
 
 def extend_vargen_network(linkset_path: str):
