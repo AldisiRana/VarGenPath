@@ -6,6 +6,7 @@ from typing import Optional
 from click import File
 from py2cytoscape.data.cynetwork import CyNetwork
 
+from .constants import LINKSET_PATH
 from .utils import (
     get_cytoscape_connection, file_reader, get_associated_genes, var_genes_network, extend_vargen_network, save_session,
     save_image
@@ -16,11 +17,11 @@ def get_vargenpath_network(
         *,
         variant_file: File,
         network_name: Optional[str] = 'VarGenPath network',
-        linkset_path: Optional[str],
-        session_path: Optional[str],
-        image_path: Optional[str],
+        linkset_path: Optional[str] = LINKSET_PATH,
+        session_path: Optional[str] = None,
+        image_path: Optional[str] = None,
         extend_network: bool = True,
-        image_type: Optional[str],
+        image_type: Optional[str] = 'SVG (*.svg)',
 ) -> CyNetwork:
     """
     Pipeline for creating vargenpath network.
