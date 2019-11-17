@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 """Command Line Interface for VarGenPath."""
+import json
 
 import click
 
@@ -14,14 +15,18 @@ from .pipeline import get_vargenpath_network
 @click.option('--image-path', type=str,
               help='If input, the network will be saved as an image in the provided path.')
 @click.option('--image-type',
-              type=click.Choice(['JPEG (*.jpeg, *.jpg)', 'PDF (*.pdf)', 'PNG (*.png)',
-                                 'PostScript (*.ps)', 'SVG (*.svg)']), default='SVG (*.svg)',
-              help='type of image to be saved')
+              type=click.Choice(['jpeg', 'jpg', 'pdf', 'png', 'ps', 'svg']), default='svg',
+              help='type of image to be saved.')
 @click.option('--session-path', type=str,
               help='If input, the cytoscape session will be saved in the provided path.')
 @click.option('--extend-network', is_flag=True, help='if true, the network will be extended.')
 @click.option('--linkset-path', type=click.Path(exists=True), default=LINKSET_PATH,
               help='if input network will be extended using the linkset, otherwise will use default.')
+@click.option('--network-path', type=str,
+              help='If input, the cytoscape network will be saved in the provided path.')
+@click.option('--network-file-type',
+              type=click.Choice(['cx', 'cyjs', 'graphml', 'xgmml', 'nnf', 'psi_mi_level_1', 'psi_mi_level_2.5', 'sif']),
+              default='cyjs', help='type of image to be saved.')
 def main(
     variants_list,
     network_name,
@@ -30,9 +35,11 @@ def main(
     extend_network,
     linkset_path,
     image_type,
+    network_path,
+    network_file_type,
 ):
     """Command Line Interface for VarGenPath."""
-    get_vargenpath_network(
+    network = get_vargenpath_network(
         variant_file=variants_list,
         network_name=network_name,
         image_path=image_path,
@@ -40,8 +47,10 @@ def main(
         session_path=session_path,
         extend_network=extend_network,
         linkset_path=linkset_path,
+        network_path=network_path,
+        network_file_path=network_file_type,
     )
-    click.echo('Task is done.')
+    click.echo(json.dumps(network, indent=2, sort_keys=True))
 
 
 if __name__ == '__main__':
