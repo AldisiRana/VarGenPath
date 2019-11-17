@@ -109,8 +109,7 @@ def save_image(
     Save network image.
 
     :param network_image: path to save the network image.
-    :param image_type: type of image to be saved.
-    Types that can be used are JPEG (*.jpeg, *.jpg), PDF (*.pdf), PNG (*.png), PostScript (*.ps), SVG (*.svg)
+    :param image_type: type of image to be saved. Types that can be used are JPEG (*.jpeg, *.jpg), PDF (*.pdf), PNG (*.png), PostScript (*.ps), SVG (*.svg)
     :return:
     """
     api(
@@ -129,9 +128,17 @@ def save_network(
         *,
         network_path,
         file_type,
-):
+) -> str:
+    """
+    Save network file.
+    
+    :param network_path: path to save the network file.
+    :param file_type: type of file to be saved.
+    :return:
+    """
     api(
         namespace="network",
         command="export",
         PARAMS={'outputFile': network_path, 'options':file_type}
     )
+    return 'Network has been saved in ' + network_path + 'using ' + file_type + 'format.'
