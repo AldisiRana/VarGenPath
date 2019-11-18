@@ -51,7 +51,8 @@ def var_genes_network(
     *,
     variants_genes_df: pd.DataFrame,
     network_name: str = 'VarGenPath network',
-    client) -> dict:
+    client,
+) -> dict:
     """
     Create cytoscape network from dataframe.
 
@@ -69,7 +70,10 @@ def var_genes_network(
     return network.to_json()
 
 
-def extend_vargen_network(linkset_path: str, client: CyRestClient) -> dict:
+def extend_vargen_network(
+    linkset_path: str,
+    client: CyRestClient
+) -> dict:
     """
     Extend network with linkset in xgmml format.
     CytargetLinker provide a number of linksets that can be downloaded and used.
@@ -107,9 +111,10 @@ def save_image(
 ) -> str:
     """
     Save network image.
+    Types that can be used are JPEG (*.jpeg, *.jpg), PDF (*.pdf), PNG (*.png), PostScript (*.ps), SVG (*.svg)
 
     :param network_image: path to save the network image.
-    :param image_type: type of image to be saved. Types that can be used are JPEG (*.jpeg, *.jpg), PDF (*.pdf), PNG (*.png), PostScript (*.ps), SVG (*.svg)
+    :param image_type: type of image to be saved. 
     :return:
     """
     api(
