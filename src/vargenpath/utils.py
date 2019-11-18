@@ -48,10 +48,10 @@ def get_associated_genes(variants_list: list) -> pd.DataFrame:
 
 
 def var_genes_network(
-        *,
-        variants_genes_df: pd.DataFrame,
-        network_name: str = 'VarGenPath network',
-        client) -> dict:
+    *,
+    variants_genes_df: pd.DataFrame,
+    network_name: str = 'VarGenPath network',
+    client) -> dict:
     """
     Create cytoscape network from dataframe.
 
@@ -85,9 +85,9 @@ def extend_vargen_network(linkset_path: str, client: CyRestClient) -> dict:
 
 
 def save_session(
-        *,
-        session_file: str,
-        client: CyRestClient,
+    *,
+    session_file: str,
+    client: CyRestClient,
 ) -> str:
     """
     Save cystoscape session.
@@ -101,9 +101,9 @@ def save_session(
 
 
 def save_image(
-        *,
-        network_image: str,
-        image_type: str = 'SVG (*.svg)',
+    *,
+    network_image: str,
+    image_type: str = 'SVG (*.svg)',
 ) -> str:
     """
     Save network image.
@@ -125,9 +125,9 @@ def save_image(
 
 
 def save_network(
-        *,
-        network_path,
-        file_type,
+    *,
+    network_path,
+    file_type,
 ) -> str:
     """
     Save network file.
@@ -139,6 +139,6 @@ def save_network(
     api(
         namespace="network",
         command="export",
-        PARAMS={'outputFile': network_path, 'options':file_type}
+        PARAMS={'outputFile': network_path, 'options': file_type}
     )
     return 'Network has been saved in ' + network_path + 'using ' + file_type + 'format.'

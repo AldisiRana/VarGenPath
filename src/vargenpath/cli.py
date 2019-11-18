@@ -4,13 +4,14 @@
 import json
 
 import click
+from vargenpath.utils import file_reader
 
 from .constants import LINKSET_PATH
 from .pipeline import get_vargenpath_network
 
 
 @click.command()
-@click.option('--variants-list', type=click.File('r'), required=True, help='A list with variants.')
+@click.option('--variants-file', type=click.File('r'), required=True, help='A list with variants.')
 @click.option('--network-name', default='VarGenPath network', help='The name of your network.')
 @click.option('--image-path', type=str,
               help='If input, the network will be saved as an image in the provided path.')
@@ -28,7 +29,7 @@ from .pipeline import get_vargenpath_network
               type=click.Choice(['cx', 'cyjs', 'graphml', 'xgmml', 'nnf', 'psi_mi_level_1', 'psi_mi_level_2.5', 'sif']),
               default='cyjs', help='type of image to be saved.')
 def main(
-    variants_list,
+    variants_file,
     network_name,
     image_path,
     session_path,
@@ -39,8 +40,9 @@ def main(
     network_file_type,
 ):
     """Command Line Interface for VarGenPath."""
+    variants_list = file_reader(variants_file)
     network = get_vargenpath_network(
-        variant_file=variants_list,
+        variant_list=variants_list,
         network_name=network_name,
         image_path=image_path,
         image_type=image_type,
